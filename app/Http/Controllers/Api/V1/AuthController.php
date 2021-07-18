@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api\Version1;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
 use App\User;
 use Auth;
 
@@ -43,6 +44,25 @@ class AuthController extends Controller
 
                 ]);
             }
-
     }
-}
+
+        public function profile()
+        {
+                $user =Auth::user();
+                $data = new UserResource($user);
+                return response()->json([
+                    'result' => 1,
+                    'message' => 'success',
+                    'data' => $data
+                ]);
+                    }
+
+                    public function logout(){
+                        Auth::user()->token()->revoke();
+                        return response()->json([
+                            'message' => 'log out successfully',
+                            'result' => 1,
+
+                        ]);
+                    }
+    }
